@@ -1,0 +1,19 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: start-dev
+    environment:
+      - KC_HEALTH_ENABLED=true
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./containers/identity:/opt/keycloak/data
+    ports:
+      - 8080:8080
+
+  spring-sample:
+    image: ghcr.io/nuwas/spring-sample-keycloak:latest
+    container_name: spring-sample-keycloak
+    ports:
+      - 8081:8081

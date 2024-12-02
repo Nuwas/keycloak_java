@@ -27,9 +27,14 @@ jobs:
           username: nuwas
           password: ${{ secrets.GH_PAT }}
           registry: ghcr.io
-     
-      - name: Build Docker Image
-        run: docker build . --tag ghcr.io/nuwas/spring-sample-keycloak:latest
+    
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       
-      - name: Push Docker Image
-        run: docker push ghcr.io/nuwas/spring-sample-keycloak:latest
+      - name: Build and Push Multi-Arch Docker Image
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            --tag ghcr.io/nuwas/spring-sample-keycloak:latest \
+            --push .
+
+        

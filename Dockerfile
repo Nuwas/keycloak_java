@@ -1,5 +1,5 @@
-#FROM adoptopenjdk/openjdk17:alpine-jre
-FROM eclipse-temurin:17-jre-alpine
+# Use Eclipse Temurin base image for Java 17 on Alpine Linux, supporting multi-architecture including arm64
+FROM --platform=$BUILDPLATFORM eclipse-temurin:17-jre-alpine
 
 ARG JAR_FILE=target/nuwas-keycloak-0.0.1-SNAPSHOT.jar
 

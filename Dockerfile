@@ -1,16 +1,16 @@
-# Use Eclipse Temurin base image for Java 17 on Alpine Linux, supporting multi-architecture including arm64
-#FROM --platform=$BUILDPLATFORM eclipse-temurin:17-jre-alpine
 FROM --platform=$BUILDPLATFORM openjdk:17-jdk-slim
 
 ARG JAR_FILE=target/nuwas-keycloak-0.0.1-SNAPSHOT.jar
 
-# cd /opt/app
+# Set working directory
 WORKDIR /opt/app
 
-# cp jtt808-server/target/jtt808-server-1.0.0-SNAPSHOT.jar /opt/app/app.jar
+# Copy the JAR file
 COPY ${JAR_FILE} app.jar
 
-RUN apk add --no-cache curl
+# Install curl using apt since this is a Debian-based image
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# java -jar /opt/app/app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]

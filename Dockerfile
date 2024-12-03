@@ -1,16 +1,14 @@
-FROM --platform=$BUILDPLATFORM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-alpine
 
 ARG JAR_FILE=target/nuwas-keycloak-0.0.1-SNAPSHOT.jar
 
-# Set working directory
+# cd /opt/app
 WORKDIR /opt/app
 
-# Copy the JAR file
+# cp jtt808-server/target/jtt808-server-1.0.0-SNAPSHOT.jar /opt/app/app.jar
 COPY ${JAR_FILE} app.jar
 
-# Install curl using apt since this is a Debian-based image
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache curl
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# java -jar /opt/app/app.jar
+ENTRYPOINT ["java","-jar","app.jar"]
